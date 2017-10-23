@@ -33,7 +33,7 @@
     <url>https://sling.apache.org/components/htl-maven-plugin/</url>
 
     <scm>
-        <connection>scm:git:https://gitbox.apache.org/repos/asf/sling-htl-maven-plugin.git</conncetion>
+        <connection>scm:git:https://gitbox.apache.org/repos/asf/sling-htl-maven-plugin.git</connection>
         <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/sling-htl-maven-plugin.git</developerConnection>
         <url>https://gitbox.apache.org/repos/asf?p=sling-htl-maven-plugin.git</url>
     </scm>

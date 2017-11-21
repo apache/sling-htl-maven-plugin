@@ -30,7 +30,7 @@ if your Maven user settings file provides the following configuration
 </pluginGroups>
 ```
 
-$h3 Configuring Your HTL Maven Plugin
+$h3 Configuring the HTL Maven Plugin
 
 ```
 <project>
@@ -58,3 +58,37 @@ $h3 Configuring Your HTL Maven Plugin
 </project>
 ```
 
+$h3 Generating Java classes from your HTL scripts
+
+Since version 1.1.0 it's possible to generate Java classes from the project's HTL scripts. This is useful when you want to identify your
+script's Java dependencies. To do this the following configuration should be applied:
+
+```
+<project>
+    ...
+    <build>
+        <pluginManagement>
+            <plugin>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>htl-maven-plugin</artifactId>
+                <version>${project.version}/version>
+                <configuration>
+                    <!-- put your configurations here -->
+                    <failOnWarnings>true</failOnWarnings>
+                    <generateJavaClasses>true</generateJavaClasses>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate-scripts</id>
+                        <goals>
+                            <goal>validate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </pluginManagement>
+    </build>
+    ...
+</project>
+```

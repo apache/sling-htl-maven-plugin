@@ -14,7 +14,7 @@ The HTL Maven Plugin has only one goal:
 
 
 ### Usage
-General instructions on how to use the HTL Maven Plugin can be found on the usage page.
+General instructions on how to use the HTL Maven Plugin can be found on the [usage](usage.html) page.
 
 In case you still have questions regarding the plugin's usage feel free to contact the Apache Sling Development List. The posts to the
 mailing list are archived and could already contain the answer to your question as part of an older thread. Hence, it is also worth

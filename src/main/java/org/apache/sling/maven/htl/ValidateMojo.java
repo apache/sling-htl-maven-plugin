@@ -69,6 +69,8 @@ public class ValidateMojo extends AbstractMojo {
 
     /**
      * Defines the root folder where this Mojo expects to find Sightly scripts to validate.
+     *
+     * @since 1.0.0
      */
     @Parameter(property = "htl.sourceDirectory", defaultValue = "${project.build.sourceDirectory}")
     private File sourceDirectory;
@@ -76,6 +78,8 @@ public class ValidateMojo extends AbstractMojo {
     /**
      * List of files to include. Specified as fileset patterns which are relative to the input directory whose contents will be scanned
      * (see the sourceDirectory configuration option).
+     *
+     * @since 1.0.0
      */
     @Parameter(defaultValue = DEFAULT_INCLUDES)
     private String[] includes;
@@ -83,12 +87,16 @@ public class ValidateMojo extends AbstractMojo {
     /**
      * List of files to exclude. Specified as fileset patterns which are relative to the input directory whose contents will be scanned
      * (see the sourceDirectory configuration option).
+     *
+     * @since 1.0.0
      */
     @Parameter
     private String[] excludes;
 
     /**
      * If set to "true" it will fail the build on compiler warnings.
+     *
+     * @since 1.0.0
      */
     @Parameter(property = "htl.failOnWarnings", defaultValue = "false")
     private boolean failOnWarnings;
@@ -96,6 +104,8 @@ public class ValidateMojo extends AbstractMojo {
     /**
      * If set to "true" it will generate the Java classes resulted from transpiling the HTL scripts to Java. The generated classes will
      * be stored in the folder identified by the {@code generatedJavaClassesDirectory} parameter.
+     *
+     * @since 1.1.0
      */
     @Parameter(property = "htl.generateJavaClasses", defaultValue = "false")
     private boolean generateJavaClasses;
@@ -103,6 +113,8 @@ public class ValidateMojo extends AbstractMojo {
     /**
      * Defines the folder where the generated Java classes resulted from transpiling the project's HTL scripts will be stored. This
      * folder will be added to the list of source folders for this project.
+     *
+     * @since 1.1.0
      */
     @Parameter(property = "htl.generatedJavaClassesDirectory", defaultValue = "${project.build.directory}/generated-sources/htl")
     private File generatedJavaClassesDirectory;
@@ -110,12 +122,16 @@ public class ValidateMojo extends AbstractMojo {
     /**
      * Defines a list of Java packages that should be ignored when generating the import statements for the Java classes resulted from
      * transpiling the project's HTL scripts. Subpackages of these packages will also be part automatically of the ignore list.
+     *
+     * @since 1.1.0
      */
     @Parameter(property = "htl.ignoreImports")
     private Set<String> ignoreImports;
 
     /**
      * If set to "true" the validation will be skipped.
+     *
+     * @since 1.0.2
      */
     @Parameter(property = "htl.skip", defaultValue = "false")
     private boolean skip;

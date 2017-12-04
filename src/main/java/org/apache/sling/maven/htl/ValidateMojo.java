@@ -27,7 +27,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -249,10 +251,16 @@ public class ValidateMojo extends AbstractMojo {
             JavaClassBackendCompiler backendCompiler = new JavaClassBackendCompiler(javaImportsAnalyzer);
             ScriptCompilationUnit compilationUnit = new ScriptCompilationUnit(sourceDirectory, script);
             compilationResult.put(script, compiler.compile(compilationUnit, backendCompiler));
-            ClassInfo classInfo = new HTLClassInfo(script.getPath().replaceFirst(sourceDirectory.getAbsolutePath(), ""));
+            
+            // strip off source directory path from script path for class info
+            File scriptFile = new File(script.getPath());
+            File sourceDirectoryDir = new File(sourceDirectory.getAbsolutePath());
+            String shortenedScriptPath = StringUtils.substringAfter(scriptFile.getCanonicalPath(), sourceDirectoryDir.getCanonicalPath());
+            
+            ClassInfo classInfo = new HTLClassInfo(shortenedScriptPath);
             String javaSourceCode = backendCompiler.build(classInfo);
             File generatedClassFile = new File(generatedJavaClassesDirectory, classInfo.getFullyQualifiedClassName()
-                    .replaceAll("\\.", File.separator) + ".java");
+                    .replaceAll("\\.", Matcher.quoteReplacement(File.separator)) + ".java");
             generatedClassFile.getParentFile().mkdirs();
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(generatedClassFile), _16K));
             out.write(javaSourceCode);

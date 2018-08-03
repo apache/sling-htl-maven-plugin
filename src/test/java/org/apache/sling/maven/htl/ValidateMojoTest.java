@@ -40,6 +40,7 @@ import org.junit.Test;
 import org.sonatype.plexus.build.incremental.DefaultBuildContext;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -135,7 +136,7 @@ public class ValidateMojoTest {
         assertEquals("Expected 2 files to process.", 2, processedFiles.size());
         assertTrue("Expected exclude.html to be one of the processed files.", processedFiles.contains(new File(baseDir, EXCLUDE_HTML)));
         assertTrue("Expected script.html to be one of the processed files.", processedFiles.contains(new File(baseDir, SCRIPT_HTML)));
-        assertEquals("Did not expect compilation warnings.", false, validateMojo.hasWarnings());
+        assertFalse("Did not expect compilation warnings.", validateMojo.hasWarnings());
     }
 
     @Test
@@ -150,8 +151,8 @@ public class ValidateMojoTest {
         String generatedSourceCode = FileUtils.readFileToString(new File(baseDir,
                 "target/generated-sources/htl/apps/projects/script_html.java"), Charset
                 .forName("UTF-8"));
-        assertTrue(generatedSourceCode.contains("import org.apache.sling.settings.SlingSettingsService;"));
-        assertTrue(generatedSourceCode.contains("import apps.projects.Pojo;"));
+        assertTrue(generatedSourceCode.contains("org.apache.sling.settings.SlingSettingsService"));
+        assertTrue(generatedSourceCode.contains("apps.projects.Pojo"));
     }
 
     private ValidateMojo getMojo(File baseDir, String pomFile) throws Exception {

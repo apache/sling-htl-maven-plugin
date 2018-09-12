@@ -20,11 +20,15 @@ package org.apache.sling.maven.htl.compiler;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.sling.scripting.sightly.compiler.CompilationUnit;
 
 public class ScriptCompilationUnit implements CompilationUnit {
@@ -36,7 +40,7 @@ public class ScriptCompilationUnit implements CompilationUnit {
     private static final int _16K = 16384;
 
     public ScriptCompilationUnit(File sourceDirectory, File script) throws FileNotFoundException {
-        reader = new BufferedReader(new FileReader(script), _16K);
+        reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), StandardCharsets.UTF_8), _16K);
         this.sourceDirectory = sourceDirectory;
         this.script = script;
     }
@@ -55,12 +59,6 @@ public class ScriptCompilationUnit implements CompilationUnit {
     }
 
     public void dispose() {
-        try {
-            if (reader != null) {
-                reader.close();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        IOUtils.closeQuietly(reader);
     }
 }

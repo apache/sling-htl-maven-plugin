@@ -57,6 +57,8 @@ public class ValidateMojoTest {
     private static final String DEFAULT_INCLUDES_POM = "default-includes.pom.xml";
     private static final String GENERATE_JAVA_CLASSES_POM = "generate-java-classes.pom.xml";
     private static final String GENERATE_JAVA_CLASSES_WITH_PREFIX_POM = "generate-java-classes-with-prefix.pom.xml";
+    private static final String SKIP_POM = "skip.pom.xml";
+    private static final String GENERATE_JAVA_CLASSES_IGNORE_IMPORTS_POM = "generate-java-classes-ignore-imports.pom.xml";
 
     @Rule
     public MojoRule mojoRule = new MojoRule() {
@@ -171,6 +173,28 @@ public class ValidateMojoTest {
         assertTrue(generatedSourceCode.contains("org.apache.sling.settings.SlingSettingsService.class"));
         assertTrue(generatedSourceCode.contains("apps.projects.Pojo"));
     }
+
+    @Test
+    public void testSkip() throws Exception {
+        File baseDir = new File(System.getProperty("basedir"));
+        ValidateMojo validateMojo = getMojo(baseDir, SKIP_POM);
+        validateMojo.execute();
+        assertEquals(0, validateMojo.getProcessedFiles().size());
+    }
+
+    @Test
+    public void testGenerateJavaClassesIgnoreImports() throws Exception {
+        File baseDir = new File(System.getProperty("basedir"));
+        ValidateMojo validateMojo = getMojo(baseDir, GENERATE_JAVA_CLASSES_IGNORE_IMPORTS_POM);
+        validateMojo.execute();
+        List<File> processedFiles = validateMojo.getProcessedFiles();
+        assertEquals("Expected 1 files to process.", 1, processedFiles.size());
+        assertTrue("Expected script.html to be one of the processed files.", processedFiles.contains(new File(baseDir,
+                SCRIPT_HTML)));
+        String generatedSourceCode = FileUtils.readFileToString(new File(baseDir,
+                "target/generated-sources/htl/apps/projects/script_html.java"), Charset
+                .forName("UTF-8"));
+        assertFalse(generatedSourceCode.contains("import org.apache.sling.settings.SlingSettingsService;"));
         assertTrue(generatedSourceCode.contains("apps.projects.Pojo"));
     }
 

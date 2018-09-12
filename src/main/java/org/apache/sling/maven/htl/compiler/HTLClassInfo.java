@@ -31,6 +31,10 @@ public class HTLClassInfo implements ClassInfo {
         fqcn = JavaEscapeUtils.makeJavaPackage(script);
     }
 
+    public HTLClassInfo(String prefix, String script) {
+        fqcn = prefix + "." + JavaEscapeUtils.makeJavaPackage(script);
+    }
+
     @Override
     public String getSimpleClassName() {
         if (simpleClassName == null) {

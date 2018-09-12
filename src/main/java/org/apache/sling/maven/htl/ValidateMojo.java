@@ -16,12 +16,12 @@
  ******************************************************************************/
 package org.apache.sling.maven.htl;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -120,6 +122,15 @@ public class ValidateMojo extends AbstractMojo {
      */
     @Parameter(property = "htl.generatedJavaClassesDirectory", defaultValue = "${project.build.directory}/generated-sources/htl")
     private File generatedJavaClassesDirectory;
+
+    /**
+     * Defines the package prefix under which the HTL compilers will generate the Java classes. By default the plugin doesn't provide any
+     * prefix.
+     *
+     * @since 1.2.0-1.4.0
+     */
+    @Parameter(property = "htl.generatedJavaClassesPrefix")
+    private String generatedJavaClassesPrefix;
 
     /**
      * Defines a list of Java packages that should be ignored when generating the import statements for the Java classes resulted from
@@ -239,7 +250,7 @@ public class ValidateMojo extends AbstractMojo {
             }
         } catch (IOException e) {
             throw new MojoExecutionException(String.format("Cannot filter files from {%s} with includes {%s} and excludes {%s}.",
-                    sourceDirectory.getAbsolutePath(), includes, excludes), e);
+                    sourceDirectory.getAbsolutePath(), Arrays.asList(includes), Arrays.asList(excludes)), e);
         }
 
     }
@@ -257,15 +268,14 @@ public class ValidateMojo extends AbstractMojo {
             File sourceDirectoryDir = new File(sourceDirectory.getAbsolutePath());
             String shortenedScriptPath = StringUtils.substringAfter(scriptFile.getCanonicalPath(), sourceDirectoryDir.getCanonicalPath());
             
-            ClassInfo classInfo = new HTLClassInfo(shortenedScriptPath);
+            ClassInfo classInfo = StringUtils.isNotEmpty(generatedJavaClassesPrefix)? new HTLClassInfo(generatedJavaClassesPrefix,
+                    shortenedScriptPath) : new HTLClassInfo(shortenedScriptPath);
             String javaSourceCode = backendCompiler.build(classInfo);
             File generatedClassFile = new File(generatedJavaClassesDirectory, classInfo.getFullyQualifiedClassName()
                     .replaceAll("\\.", Matcher.quoteReplacement(File.separator)) + ".java");
-            generatedClassFile.getParentFile().mkdirs();
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(generatedClassFile), _16K));
-            out.write(javaSourceCode);
+            FileUtils.forceMkdirParent(generatedClassFile);
+            IOUtils.write(javaSourceCode, new FileOutputStream(generatedClassFile), StandardCharsets.UTF_8);
             compilationUnit.dispose();
-            out.close();
         }
         return compilationResult;
     }

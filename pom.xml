@@ -50,7 +50,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <site.jira.version.id>12336741,12338350,12338646,12338974,12341271,12342047,12342267,12342272,12343462,
-            12343846,12344079,12344332</site.jira.version.id>
+            12343846,12344079,12344332,12344876</site.jira.version.id>
         <maven.version>3.3.9</maven.version>
         <maven.site.path>${project.artifactId}-archives/${project.artifactId}-LATEST</maven.site.path>
         <jacoco.version>0.8.1</jacoco.version>

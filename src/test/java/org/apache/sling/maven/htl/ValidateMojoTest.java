@@ -42,6 +42,7 @@ import org.sonatype.plexus.build.incremental.DefaultBuildContext;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class ValidateMojoTest {
@@ -50,6 +51,8 @@ public class ValidateMojoTest {
     private static final String WARNING_SLY = "src/main/resources/apps/projects/warning.sly";
     private static final String SCRIPT_HTML = "src/main/resources/apps/projects/script.html";
     private static final String EXCLUDE_HTML = "src/main/resources/apps/projects/exclude.html";
+    private static final String INVALID_OPTIONS_SLY = "src/main/resources/apps/projects/invalid-options.sly";
+    private static final String NON_DEFAULT_OPTIONS_SLY = "src/main/resources/apps/projects/non-default-options.sly";
     private static final String TEST_PROJECT = "test-project";
     private static final String EXPLICIT_INCLUDES_POM = "explicit-includes.pom.xml";
     private static final String EXPLICIT_EXCLUDES_POM = "explicit-excludes.pom.xml";
@@ -59,6 +62,9 @@ public class ValidateMojoTest {
     private static final String GENERATE_JAVA_CLASSES_WITH_PREFIX_POM = "generate-java-classes-with-prefix.pom.xml";
     private static final String SKIP_POM = "skip.pom.xml";
     private static final String GENERATE_JAVA_CLASSES_IGNORE_IMPORTS_POM = "generate-java-classes-ignore-imports.pom.xml";
+    private static final String INVALID_OPTIONS_POM = "invalid-options.pom.xml";
+    private static final String NON_DEFAULT_OPTIONS_POM = "non-default-options.pom.xml";
+
 
     @Rule
     public MojoRule mojoRule = new MojoRule() {
@@ -87,7 +93,7 @@ public class ValidateMojoTest {
             validateMojo.execute();
         } catch (MojoFailureException e) {
             List<File> processedFiles = validateMojo.getProcessedFiles();
-            assertEquals("Expected 2 files to process.", 2, processedFiles.size());
+            assertEquals("Expected 4 files to process.", 4, processedFiles.size());
             assertTrue("Expected error.sly to be one of the processed files.", processedFiles.contains(new File(baseDir, ERROR_SLY)));
             assertTrue("Expected warning.sly to be one of the processed files.", processedFiles.contains(new File(baseDir, WARNING_SLY)));
             assertEquals("Expected compilation errors.", true, validateMojo.hasErrors());
@@ -196,6 +202,43 @@ public class ValidateMojoTest {
                 .forName("UTF-8"));
         assertFalse(generatedSourceCode.contains("import org.apache.sling.settings.SlingSettingsService;"));
         assertTrue(generatedSourceCode.contains("apps.projects.Pojo"));
+    }
+
+    @Test
+    public void testInvalidOptions() throws Exception {
+        File baseDir = new File(System.getProperty("basedir"));
+        ValidateMojo validateMojo = getMojo(baseDir, INVALID_OPTIONS_POM);
+        Exception exception = null;
+        try {
+            validateMojo.execute();
+        } catch (MojoFailureException e) {
+            exception = e;
+        }
+        assertNotNull("Expected a MojoFailureException.", exception);
+        List<File> processedFiles = validateMojo.getProcessedFiles();
+        assertEquals("Expected 1 files to process.", 1, processedFiles.size());
+        assertTrue("Expected invalid-options.sly to be one of the processed files.", processedFiles.contains(new File(baseDir,
+                INVALID_OPTIONS_SLY)));
+        assertTrue("Expected compilation warnings.", validateMojo.hasWarnings());
+    }
+
+    @Test
+    public void testNonDefaultOptions() throws Exception {
+        File baseDir = new File(System.getProperty("basedir"));
+        ValidateMojo validateMojo = getMojo(baseDir, NON_DEFAULT_OPTIONS_POM);
+        Exception exception = null;
+        try {
+            validateMojo.execute();
+        } catch (MojoFailureException e) {
+            exception = e;
+        }
+        assertNull("Did not expect a MojoFailureException.", exception);
+        List<File> processedFiles = validateMojo.getProcessedFiles();
+        assertEquals("Expected 1 files to process.", 1, processedFiles.size());
+        assertTrue("Expected non-default-options.sly to be one of the processed files.", processedFiles.contains(new File(baseDir,
+                NON_DEFAULT_OPTIONS_SLY)));
+        assertFalse("Did not expect compilation warnings.", validateMojo.hasWarnings());
+        assertFalse("Did not expect compilation errors.", validateMojo.hasErrors());
     }
 
     private ValidateMojo getMojo(File baseDir, String pomFile) throws Exception {

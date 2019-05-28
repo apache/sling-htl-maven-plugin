@@ -149,6 +149,14 @@ public class ValidateMojo extends AbstractMojo {
     @Parameter(property = "htl.skip", defaultValue = "false")
     private boolean skip;
 
+    /**
+     * Adds the provided options to the list of known expression options, so that the compiler doesn't log any warnings about them.
+     *
+     * @since 1.3.0
+     */
+    @Parameter(property = "htl.allowedExpressionOptions")
+    private Set<String> allowedExpressionOptions;
+
     private boolean hasWarnings = false;
     private boolean hasErrors = false;
     private List<File> processedFiles = Collections.emptyList();
@@ -211,11 +219,12 @@ public class ValidateMojo extends AbstractMojo {
                 processedFiles.add(new File(sourceDirectory, includedFile));
             }
             Map<File, CompilationResult> compilationResults;
+            SightlyCompiler compiler = SightlyCompiler.withKnownExpressionOptions(allowedExpressionOptions);
             if (generateJavaClasses) {
-                compilationResults = transpileHTLScriptsToJavaClasses(processedFiles, new SightlyCompiler(), new HTLJavaImportsAnalyzer
+                compilationResults = transpileHTLScriptsToJavaClasses(processedFiles, compiler, new HTLJavaImportsAnalyzer
                         (ignoreImports));
             } else {
-                compilationResults = compileHTLScripts(processedFiles, new SightlyCompiler());
+                compilationResults = compileHTLScripts(processedFiles, compiler);
             }
             for (Map.Entry<File, CompilationResult> entry : compilationResults.entrySet()) {
                 File script = entry.getKey();

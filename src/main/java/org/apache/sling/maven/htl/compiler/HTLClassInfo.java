@@ -18,8 +18,8 @@
  ******************************************************************************/
 package org.apache.sling.maven.htl.compiler;
 
+import org.apache.sling.commons.compiler.source.JavaEscapeHelper;
 import org.apache.sling.scripting.sightly.java.compiler.ClassInfo;
-import org.apache.sling.scripting.sightly.java.compiler.JavaEscapeUtils;
 
 public class HTLClassInfo implements ClassInfo {
 
@@ -28,17 +28,17 @@ public class HTLClassInfo implements ClassInfo {
     private String packageName;
 
     public HTLClassInfo(String script) {
-        fqcn = JavaEscapeUtils.makeJavaPackage(script);
+        fqcn = JavaEscapeHelper.makeJavaPackage(script);
     }
 
     public HTLClassInfo(String prefix, String script) {
-        fqcn = prefix + "." + JavaEscapeUtils.makeJavaPackage(script);
+        fqcn = prefix + "." + JavaEscapeHelper.makeJavaPackage(script);
     }
 
     @Override
     public String getSimpleClassName() {
         if (simpleClassName == null) {
-            simpleClassName = fqcn.substring(fqcn.lastIndexOf(".") + 1);
+            simpleClassName = fqcn.substring(fqcn.lastIndexOf('.') + 1);
         }
         return simpleClassName;
     }
@@ -46,7 +46,7 @@ public class HTLClassInfo implements ClassInfo {
     @Override
     public String getPackageName() {
         if (packageName == null) {
-            packageName = fqcn.substring(0, fqcn.lastIndexOf("."));
+            packageName = fqcn.substring(0, fqcn.lastIndexOf('.'));
         }
         return packageName;
     }

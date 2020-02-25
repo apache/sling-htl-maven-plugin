@@ -170,7 +170,7 @@ public class ValidateMojoTest {
         assertTrue("Expected script.html to be one of the processed files.", processedFiles.contains(new File(baseDir,
                 SCRIPT_HTML)));
         String generatedSourceCode = FileUtils.readFileToString(new File(baseDir,
-                "target/generated-sources/htl/apps/projects/script_html.java"), StandardCharsets.UTF_8);
+                "target/generated-sources/htl/apps/projects/script__002e__html.java"), StandardCharsets.UTF_8);
         assertTrue(generatedSourceCode.contains("org.apache.sling.settings.SlingSettingsService.class"));
         assertTrue(generatedSourceCode.contains("apps.projects.Pojo"));
     }
@@ -185,7 +185,7 @@ public class ValidateMojoTest {
         assertTrue("Expected script.html to be one of the processed files.", processedFiles.contains(new File(baseDir,
                 SCRIPT_HTML)));
         String generatedSourceCode = FileUtils.readFileToString(new File(baseDir,
-                "target/generated-sources/htl/org/apache/sling/scripting/sightly/apps/projects/script_html.java"), StandardCharsets.UTF_8);
+                "target/generated-sources/htl/org/apache/sling/scripting/sightly/apps/projects/script__002e__html.java"), StandardCharsets.UTF_8);
         assertTrue(generatedSourceCode.contains("org.apache.sling.settings.SlingSettingsService.class"));
         assertTrue(generatedSourceCode.contains("apps.projects.Pojo"));
     }
@@ -208,7 +208,7 @@ public class ValidateMojoTest {
         assertTrue("Expected script.html to be one of the processed files.", processedFiles.contains(new File(baseDir,
                 SCRIPT_HTML)));
         String generatedSourceCode = FileUtils.readFileToString(new File(baseDir,
-                "target/generated-sources/htl/apps/projects/script_html.java"), StandardCharsets.UTF_8);
+                "target/generated-sources/htl/apps/projects/script__002e__html.java"), StandardCharsets.UTF_8);
         assertFalse(generatedSourceCode.contains("import org.apache.sling.settings.SlingSettingsService;"));
         assertTrue(generatedSourceCode.contains("apps.projects.Pojo"));
     }

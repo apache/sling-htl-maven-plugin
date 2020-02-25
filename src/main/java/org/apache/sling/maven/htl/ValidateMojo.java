@@ -63,7 +63,6 @@ import org.sonatype.plexus.build.incremental.BuildContext;
 public class ValidateMojo extends AbstractMojo {
 
     private static final String DEFAULT_INCLUDES = "**/*.html";
-    private static final int _16K = 16384;
 
     @Component
     private BuildContext buildContext;
@@ -189,11 +188,9 @@ public class ValidateMojo extends AbstractMojo {
                 throw new MojoExecutionException(String.format("Configured generatedJavaClassesDirectory={%s} is not a directory.",
                         generatedJavaClassesDirectory.getAbsolutePath()));
             }
-            if (!generatedJavaClassesDirectory.exists()) {
-                if (!generatedJavaClassesDirectory.mkdirs()) {
-                    throw new MojoExecutionException(String.format("Unable to generate generatedJavaClassesDirectory={%s}.",
-                            generatedJavaClassesDirectory.getAbsolutePath()));
-                }
+            if (!generatedJavaClassesDirectory.exists() && !generatedJavaClassesDirectory.mkdirs()) {
+                throw new MojoExecutionException(String.format("Unable to generate generatedJavaClassesDirectory={%s}.",
+                        generatedJavaClassesDirectory.getAbsolutePath()));
             }
             project.addCompileSourceRoot(generatedJavaClassesDirectory.getPath());
         }

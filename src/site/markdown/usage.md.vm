@@ -74,7 +74,7 @@ script's Java dependencies. To do this the following configuration should be app
                 <plugin>
                     <groupId>org.apache.sling</groupId>
                     <artifactId>htl-maven-plugin</artifactId>
-                    <version>${project.version}/version>
+                    <version>${project.version}</version>
                     <configuration>
                         <!-- put your configurations here -->
                         <failOnWarnings>true</failOnWarnings>

@@ -71,11 +71,12 @@ public class ValidateMojo extends AbstractMojo {
     protected MavenProject project;
 
     /**
-     * Defines the root folder where this Mojo expects to find Sightly scripts to validate.
+     * Defines the root folder where this Mojo expects to find HTL scripts to validate. The default value has been changed from
+     * {@code ${project.build.sourceDirectory}} to {@code ${project.build.scriptSourceDirectory}} in version 2.0.0.
      *
      * @since 1.0.0
      */
-    @Parameter(property = "htl.sourceDirectory", defaultValue = "${project.build.sourceDirectory}")
+    @Parameter(property = "htl.sourceDirectory", defaultValue = "${project.build.scriptSourceDirectory}")
     private File sourceDirectory;
 
     /**

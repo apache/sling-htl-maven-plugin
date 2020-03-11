@@ -29,10 +29,11 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.MojoRule;
-import org.apache.maven.plugin.testing.SilentLog;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.ProjectBuilder;
 import org.apache.maven.project.ProjectBuildingRequest;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.junit.After;
 import org.junit.Assert;
@@ -76,6 +77,7 @@ public class ValidateMojoTest {
     private static final String INVALID_OPTIONS_POM = "invalid-options.pom.xml";
     private static final String NON_DEFAULT_OPTIONS_POM = "non-default-options.pom.xml";
     private static final String DATA_SLY_TEST_CONSTANT_VALUES_POM_XML = "data-sly-test-constant-values.pom.xml";
+    private static final String FAIL_ON_ERRORS_FALSE_POM_XML = "fail-on-errors-false.pom.xml";
 
 
     @Rule
@@ -158,6 +160,18 @@ public class ValidateMojoTest {
         assertTrue("Expected exclude.html to be one of the processed files.", processedFiles.contains(new File(baseDir, EXCLUDE_HTML)));
         assertTrue("Expected script.html to be one of the processed files.", processedFiles.contains(new File(baseDir, SCRIPT_HTML)));
         assertFalse("Did not expect compilation warnings.", validateMojo.hasWarnings());
+    }
+
+    @Test
+    public void testFailOnErrorsFalse() throws Exception {
+        File baseDir = new File(System.getProperty("basedir"));
+        ValidateMojo validateMojo = getMojo(baseDir, FAIL_ON_ERRORS_FALSE_POM_XML);
+        validateMojo.execute();
+        List<File> processedFiles = validateMojo.getProcessedFiles();
+        assertEquals("Expected 1 file to process.", 1, processedFiles.size());
+        assertTrue("Expected error.sly to be one of the processed files.", processedFiles.contains(new File(baseDir, ERROR_SLY)));
+        assertFalse("Did not expect compilation warnings.", validateMojo.hasWarnings());
+        assertTrue("Expected compilation errors.", validateMojo.hasErrors());
     }
 
     @Test
@@ -276,7 +290,7 @@ public class ValidateMojoTest {
     }
 
     private ValidateMojo getMojo(File baseDir, String pomFile, DefaultBuildContext buildContext) throws Exception {
-        SilentLog log = new SilentLog();
+        Logger log = new ConsoleLogger();
         if (buildContext == null) {
             buildContext = new DefaultBuildContext();
         }
@@ -287,7 +301,6 @@ public class ValidateMojoTest {
         MavenSession session = mojoRule.newMavenSession(project);
         MojoExecution execution = mojoRule.newMojoExecution("validate");
         ValidateMojo validateMojo = (ValidateMojo) mojoRule.lookupConfiguredMojo(session, execution);
-        validateMojo.setLog(log);
         validateMojo.setBuildContext(buildContext);
         return validateMojo;
     }

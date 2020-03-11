@@ -106,6 +106,14 @@ public class ValidateMojo extends AbstractMojo {
     private boolean failOnWarnings;
 
     /**
+     * If set to "false" it will not fail the build on compiler errors, however the errors will still be logged.
+     *
+     * @since 2.0.0
+     */
+    @Parameter(property = "htl.failOnErrors", defaultValue = "true")
+    private boolean failOnErrors;
+
+    /**
      * If set to "true" it will generate the Java classes resulted from transpiling the HTL scripts to Java. The generated classes will
      * be stored in the folder identified by the {@code generatedJavaClassesDirectory} parameter.
      *
@@ -252,7 +260,7 @@ public class ValidateMojo extends AbstractMojo {
             if (mayFailExecution && hasWarnings && failOnWarnings) {
                 throw new MojoFailureException("Compilation warnings were configured to fail the build.");
             }
-            if (mayFailExecution && hasErrors) {
+            if (mayFailExecution && hasErrors && failOnErrors) {
                 throw new MojoFailureException("Please check the reported syntax errors.");
             }
         } catch (IOException e) {

@@ -14,7 +14,8 @@ To validate your HTL Scripts you can run the following command:
 mvn org.apache.sling:htl-maven-plugin:validate
 ```
 
-This assumes you've configured the `\${project.build.sourceDirectory}` setting.
+This assumes the scripts are found in the  `\${project.build.scriptSourceDirectory}` directory. Alternatively, you can configure the folder
+using the `sourceDirectory` configuration parameter.
 
 The command can be simplified to
 

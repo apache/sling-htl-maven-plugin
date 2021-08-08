@@ -53,11 +53,11 @@ import org.codehaus.plexus.util.Scanner;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
- * Validates HTL scripts.
+ * Validates HTL scripts and optionally transpiles them to Java classes.
  */
 @Mojo(
         name = "validate",
-        defaultPhase = LifecyclePhase.COMPILE,
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
         threadSafe = true
 )
 public class ValidateMojo extends AbstractMojo {
@@ -291,6 +291,7 @@ public class ValidateMojo extends AbstractMojo {
             FileUtils.forceMkdirParent(generatedClassFile);
             IOUtils.write(javaSourceCode, new FileOutputStream(generatedClassFile), StandardCharsets.UTF_8);
             compilationUnit.dispose();
+            getLog().debug(String.format("Transpiled HTL '%s' to Java class '%s'", script, generatedClassFile));
         }
         return compilationResult;
     }
@@ -301,6 +302,7 @@ public class ValidateMojo extends AbstractMojo {
             ScriptCompilationUnit scriptCompilationUnit = new ScriptCompilationUnit(sourceDirectory, script);
             compilationResult.put(script, compiler.compile(scriptCompilationUnit));
             scriptCompilationUnit.dispose();
+            getLog().debug(String.format("Compiled HTL script '%s'", script));
         }
         return compilationResult;
     }

@@ -18,6 +18,7 @@
  ******************************************************************************/
 package org.apache.sling.maven.htl.compiler;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.sling.scripting.sightly.java.compiler.JavaImportsAnalyzer;
@@ -27,7 +28,7 @@ public class HTLJavaImportsAnalyzer implements JavaImportsAnalyzer {
     private Set<String> ignoreImports;
 
     public HTLJavaImportsAnalyzer(Set<String> ignoreImports) {
-        this.ignoreImports = ignoreImports;
+        this.ignoreImports = new HashSet<>(ignoreImports);
     }
 
     @Override

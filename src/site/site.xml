@@ -18,23 +18,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project>
-    <skin>
-        <groupId>org.apache.maven.skins</groupId>
-        <artifactId>maven-fluido-skin</artifactId>
-        <version>1.6</version>
-    </skin>
+<project xmlns="http://maven.apache.org/DECORATION/1.8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd"
+    name="HTL Maven Plugin">
     <body>
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
             <item name="Goals" href="plugin-info.html"/>
             <item name="Usage" href="usage.html"/>
         </menu>
-        <menu ref="reports"/>
+        <menu ref="reports" inherit="bottom"/>
     </body>
-    <custom>
-        <fluidoSkin>
-            <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
-        </fluidoSkin>
-    </custom>
 </project>

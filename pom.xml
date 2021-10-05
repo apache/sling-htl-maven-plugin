@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.apache.sling</groupId>
         <artifactId>sling</artifactId>
-        <version>45</version>
+        <version>46</version>
         <relativePath />
     </parent>
 
@@ -54,7 +54,6 @@
             12343846,12344079,12344332,12344876,12345571,12346551,12346590,12346596,12348677</site.jira.version.id>
         <maven.version>3.3.9</maven.version>
         <maven.site.path>${project.artifactId}-archives/${project.artifactId}-LATEST</maven.site.path>
-        <sightly.runtime.version>1.2.0-1.4.0</sightly.runtime.version>
         <argLine />
         <!-- the github id used for the ribbon for Maven sites: https://maven.apache.org/skins/maven-fluido-skin/#GitHub_ribbons -->
         <github.project.id>apache/sling-htl-maven-plugin</github.project.id>
@@ -101,17 +100,17 @@
         <dependency>
             <groupId>org.apache.sling</groupId>
             <artifactId>org.apache.sling.scripting.sightly.runtime</artifactId>
-            <version>1.2.5-1.4.0-SNAPSHOT</version>
+            <version>1.2.6-1.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.sling</groupId>
             <artifactId>org.apache.sling.scripting.sightly.compiler</artifactId>
-            <version>1.2.9-1.4.0-SNAPSHOT</version>
+            <version>1.2.14-1.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.sling</groupId>
             <artifactId>org.apache.sling.scripting.sightly.compiler.java</artifactId>
-            <version>1.2.3-1.4.0-SNAPSHOT</version>
+            <version>1.2.2-1.4.0</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

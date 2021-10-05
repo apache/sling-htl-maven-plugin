@@ -64,7 +64,7 @@ $h3 Configuring the HTL Maven Plugin
 $h3 Generating Java classes from your HTL scripts
 
 Since version 1.1.0 it's possible to generate Java classes from the project's HTL scripts. This is useful when you want to identify your
-script's Java dependencies. To do this the following configuration should be applied:
+script's Java dependencies or precompile scripts. To do this the following configuration should be applied:
 
 ```
 <project>
@@ -83,7 +83,7 @@ script's Java dependencies. To do this the following configuration should be app
                     </configuration>
                     <executions>
                         <execution>
-                            <id>validate-scripts</id>
+                            <id>transpile-scripts</id>
                             <goals>
                                 <goal>validate</goal>
                             </goals>
@@ -91,34 +91,14 @@ script's Java dependencies. To do this the following configuration should be app
                         </execution>
                     </executions>
                 </plugin>
-            </plugins>    
+            </plugins>
         </pluginManagement>
     </build>
     ...
 </project>
 ```
 
-Additionally, the following dependencies are required as part of your project's dependencies list:
-
-```
-<!-- HTL dependencies needed for the HTL Maven Plugin source code generation -->
-<dependency>
-    <groupId>org.apache.sling</groupId>
-    <artifactId>org.apache.sling.scripting.sightly.compiler</artifactId>
-    <!-- version 1.0.14 or higher -->
-    <version>1.0.14</version>
-    <scope>provided</scope>
-</dependency>
-<dependency>
-    <groupId>org.apache.sling</groupId>
-    <artifactId>org.apache.sling.scripting.sightly.compiler.java</artifactId>
-    <!-- version 1.0.16 or higher -->
-    <version>1.0.16</version>
-    <scope>provided</scope>
-</dependency>
-```
-
-Starting with version 1.2.2 of the `htl-maven-plugin`, only the following dependency is needed as part of your project's dependency list:
+Additionally, the following dependency is needed as part of your project's dependency list:
 
 ```
 <!-- HTL dependencies needed for the HTL Maven Plugin source code generation -->

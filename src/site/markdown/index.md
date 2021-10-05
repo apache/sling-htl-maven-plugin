@@ -1,19 +1,21 @@
-## Apache Sling HTL Maven Plugin
+# Overview
 
-The Apache Sling HTL Maven Plugin, M2Eclipse compatible, provides support for validating HTML Template Language scripts from projects during
+The Apache Sling HTL Maven Plugin provides support for validating HTML Template Language scripts from projects during
 build time, reporting issues like:
 
 * syntax errors;
 * expression warnings (e.g. missing required display contexts, sensible attributes with dynamic values, etc.);
 * incorrect usage of block elements.
 
-### Goals
+It is compatible with [m2eclipse](https://www.eclipse.org/m2e/documentation/m2e-making-maven-plugins-compat.html) and supports executing its goals during Eclipse incremental builds.
+
+## Goals
 The HTL Maven Plugin has only one goal:
 
-* [htl:validate](validate-mojo.html) is bound to the compile phase and is used to validate HTL scripts.
+* [htl:validate](validate-mojo.html) is bound to the generate-sources phase and is used to validate/transpile HTL scripts.
 
 
-### Usage
+## Usage
 General instructions on how to use the HTL Maven Plugin can be found on the [usage](usage.html) page.
 
 In case you still have questions regarding the plugin's usage feel free to contact the Apache Sling Development List. The posts to the
